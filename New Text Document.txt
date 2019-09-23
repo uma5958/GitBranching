@@ -1,0 +1,31 @@
+WebDriver driver;
+	
+	@Given("^Open browser and navigate to url$")
+	public void open_browser_and_navigate_to_url() throws Throwable {
+		System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.get("http://localhost/login.do");
+	}
+
+	@When("^LoginPage title is Free CRM$")
+	public void loginpage_title_is_Free_CRM() throws Throwable {
+	    Assert.assertEquals(driver.getTitle(), "actiTIME - Login");
+	}
+
+	@Then("^Enter username and password$")
+	public void enter_username_and_password() throws Throwable {
+	    driver.findElement(By.xpath("//input[contains(@id,'username')]")).sendKeys("");
+	    driver.findElement(By.xpath("//input[contains(@name,'pwd')]")).sendKeys("");
+	}
+
+	@Then("^Click on login button$")
+	public void click_on_login_button() throws Throwable {
+	    driver.findElement(By.xpath("//div[text()='Login ']")).click();
+	}
+
+	@Then("^Sould display the HomePage$")
+	public void sould_display_the_HomePage() throws Throwable {
+		boolean visibility = driver.findElement(By.xpath("//a[contains(@id,'logoutLink')]")).isDisplayed();
+		Assert.assertTrue(visibility, "Login in unsuccessful");
+		Reporter.log("Login successful", true);
+	}
